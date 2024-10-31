@@ -2,10 +2,10 @@
 
 
 args = commandArgs(trailingOnly=TRUE)
-exprpath = args[1]
-dbpath = args[2]
-resPrefix = args[3] # All_junction
-method = args[4] # gsva
+exprpath = args[1] # exprpath = '../data/gex/tpm.csv'
+dbpath = args[2] # dbpath = '../data/geneset/c2.cp.v2023.1.Hs.symbols.gmt'
+resPrefix = args[3] # resPrefix = '../data/gsva/ILC21pt_MsigdbCanonical'
+method = args[4] # method = 'ssgsea'
 
 print(args)
 
@@ -43,5 +43,8 @@ parse_gmt = function(gmt_path){
 geneset = parse_gmt(dbpath) 
 mat = as.matrix(read.csv(exprpath, header=T, row.names=1)) 
 
-res = gsva(mat, geneset, kcdf='Gaussian', method=method, parallel.sz=8)
+# res = GSVA::gsva(mat, geneset, kcdf='Gaussian', method=method, parallel.sz=8) # it is updated since 2024, thus the old one does not work, per 188
+ssgsea_par <- ssgseaParam(mat, geneset)  # all other values are default values
+res <- gsva(ssgsea_par)
+
 write.csv(res, file=paste(resPrefix,'.',method,'.csv', sep=''), quote=F)

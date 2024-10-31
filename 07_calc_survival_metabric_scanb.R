@@ -5,12 +5,12 @@ source('codes/functions.R')
 # METABRIC ER+ --------------------------------------------------------------
 ## preprocessing
 library(data.table)
-df = fread('/Users/chelseachen/Library/CloudStorage/OneDrive-UniversityofPittsburgh/01_projects/yap/data/normcts/metabric.nolan.expr.csv') %>% as.data.frame()
+df = fread('data/public/metabric.nolan.expr.csv') %>% as.data.frame()
 rownames(df) = df$V1; df$V1=NULL
 
 gex = df
 
-meta = read.csv('../yap/data/metabric/brca_metabric_clinical_data.csv', row.names=1)
+meta = read.csv('data/public/brca_metabric_clinical_data.csv', row.names=1)
 pts = intersect(colnames(df), rownames(meta))
 meta = meta[pts,]
 summary(meta$Age.at.Diagnosis, useNA="ifany")
@@ -67,7 +67,7 @@ p = ggsurvplot(km_fit, data = plot.dat,
            title = "METABRIC ER+ Tumors",  # Title of the plot
            legend.title = "TAM-Low Signature",
            palette = c("#6497B1", "#F7766D"))  # Custom legend title
-pdf(file.path(rootdir, "images_rebuttal/KM METABRIC DFS.pdf"), width=4, height=3)
+pdf(file.path(rootdir, "images/KM METABRIC DFS.pdf"), width=4, height=3)
 print(p)
 dev.off()
 
@@ -143,7 +143,7 @@ p = ggsurvplot(km_fit, data = plot.dat,
            title = "METABRIC ER+ Tumors",  # Title of the plot
            legend.title = "TAM-Low Signature",
            palette = c("#6497B1", "#F7766D"))  # Custom legend title
-pdf(file.path(rootdir, "images_rebuttal/KM METABRIC OS.pdf"), width=4, height=3)
+pdf(file.path(rootdir, "images/KM METABRIC OS.pdf"), width=4, height=3)
 print(p)
 dev.off()
 
@@ -187,7 +187,7 @@ write.csv(res,'data/survival/METABRIC_OS_ILC.csv', quote=FALSE)
 
 # SCANB ER+ --------------------------------------------------------------
 ## preprocessing
-meta = read.csv('/Users/chelseachen/Library/CloudStorage/OneDrive-UniversityofPittsburgh/01_projects/yap/data/scanb/scanb_samples_processed.tsv', 
+meta = read.csv('data/public/scanb_samples_processed.tsv', 
 sep='\t', check.names=F, row.names=1)
 
 gsva = as.data.frame(t(read.csv('data/gsva/scanb_log2cpm_Macrophages.gmt.ssgsea.csv', check.names = F, row.names = 1)))
@@ -243,7 +243,7 @@ p = ggsurvplot(km_fit, data = plot.dat,
            title = "SCAN-B ER+ tumors",  # Title of the plot
            legend.title = "TAM-Low Signature",
            palette = c("#6497B1", "#F7766D"))  # Custom legend title
-pdf(file.path(rootdir, "images_rebuttal/KM SCANB OS.pdf"), width=4, height=3)
+pdf(file.path(rootdir, "images/KM SCANB OS.pdf"), width=4, height=3)
 print(p)
 dev.off()
 
